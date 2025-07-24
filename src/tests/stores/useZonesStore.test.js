@@ -11,8 +11,8 @@ describe('useZonesStore', () => {
     await store.fetchZones()
   })
 
-  it('should load 3 zones initially', () => {
-    expect(store.zones.length).toBe(3)
+  it('should load 5 zones initially', () => {
+    expect(store.zones.length).toBe(5)
   })
 
   it('should toggle a zone on and off', () => {

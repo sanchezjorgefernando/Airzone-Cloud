@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { setActivePinia, createPinia } from "pinia";
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import ZoneButton from "../../components/ZoneButton.vue";
 
 const zoneStatusMock = vi.fn();
 
@@ -12,48 +13,51 @@ vi.mock("@/stores/useZonesStore", () => {
   };
 });
 
-import ZoneButton from "../../components/ZoneButton.vue";
-import { useZonesStore } from "@/stores/useZonesStore";
+const baseZone = {
+  id: 1,
+  nameZone: "Living Room Zone",
+  tempAmb: 21.456,
+  tempAmbConsigna: 22,
+  isOn: true,
+  modeZone: "heat",
+};
 
+const createWrapper = (zoneOverrides = {}) => {
+  return mount(ZoneButton, {
+    props: {
+      zone: { ...baseZone, ...zoneOverrides },
+    },
+  });
+};
 describe("ZoneButton.vue", () => {
-  let store;
-
-  const baseZone = {
-    id: 1,
-    nameZone: "Living Room Zone",
-    tempAmb: 21.456,
-    tempAmbConsigna: 22,
-    isOn: true,
-    modeZone: "heat",
-  };
 
   beforeEach(() => {
     setActivePinia(createPinia());
-    store = useZonesStore();
-    zoneStatusMock.mockReset(); // Limpia mocks entre tests
+    zoneStatusMock.mockReset();
   });
 
-  it("displays correct status text for heating", () => {
+  it("should display the correct status text for heating", () => {
     zoneStatusMock.mockReturnValue("heating");
-    const wrapper = mount(ZoneButton, {
-      props: { zone: baseZone },
-    });
+    const wrapper = createWrapper();
+
     expect(wrapper.find(".zb-status").text()).toBe(
       `Heating to ${baseZone.tempAmbConsigna}°`
     );
   });
 
-  it("displays correct status text for cooling", () => {
+  it("should display the correct status text for cooling", () => {
     zoneStatusMock.mockReturnValue("cooling");
-    const wrapper = mount(ZoneButton, {
-      props: { zone: baseZone },
-    });
+    const wrapper = createWrapper();
+
     expect(wrapper.find(".zb-status").text()).toBe(
       `Cooling to ${baseZone.tempAmbConsigna}°`
     );
   });
 
+  it("should display the correct status text for comfort", () => {
+    zoneStatusMock.mockReturnValue("comfort");
+    const wrapper = createWrapper();
 
-
-  // Otros tests...
+    expect(wrapper.find(".zb-status").text()).toBe(`Success`);
+  });
 });
