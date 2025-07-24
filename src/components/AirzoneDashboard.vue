@@ -29,13 +29,12 @@
         <div class="scenes-section">
             <span class="scenes-title">My Zones</span>
             <div class="zones">
-                <!-- Componente ZoneButton para cada zona, con eventos para toggle y details -->
+                <!-- Componente ZoneButton para cada zona, con eventos para toggle -->
                 <ZoneButton 
                     v-for="zone in store.zones" 
                     :key="zone.id" 
                     :zone="zone" 
                     @toggle="store.toggleZone"
-                    @details="openDetails" 
                 />
             </div>
         </div>
@@ -76,15 +75,6 @@ onBeforeUnmount(() => {
     store.zones.forEach(zone => store.stopTemperatureRegulation(zone.id))
 })
 
-// Función para mostrar detalles de una zona mediante alerta
-function openDetails(zone) {
-    alert(`
-        Zona: ${zone.nameZone}
-        Ambiente: ${zone.tempAmb}°C
-        Consigna: ${zone.tempAmbConsigna}°C
-        Estado: ${store.zoneStatus(zone)}
-    `)
-}
 </script>
 
 <style scoped lang="scss">
