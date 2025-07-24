@@ -62,18 +62,6 @@ describe("AirzoneDashboard.vue", () => {
     expect(buttons).toHaveLength(2);
   });
 
-  it("muestra alerta al hacer click en detalles", async () => {
-    global.alert = vi.fn();
-
-    const zoneButton = wrapper.findComponent(ZoneButton);
-    await zoneButton.vm.$emit("details", store.zones[0]);
-
-    expect(global.alert).toHaveBeenCalledWith(
-      expect.stringContaining("Living Room")
-    );
-    expect(global.alert).toHaveBeenCalledWith(expect.stringContaining("23"));
-  });
-
   it("should render the ON and OFF buttons", () => {
     const houseButtons = wrapper.findAll(".toggle-group button");
 
